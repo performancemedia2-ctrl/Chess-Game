@@ -23,17 +23,17 @@ jobs:
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          # Remove the feature-strip CSS, including responsive rules.
-          s = re.sub(r'\\.feature-grid\\{[^}]*\\}', '', s)
-          s = re.sub(r'\\.feature\\{[^}]*\\}', '', s)
-          s = re.sub(r'\\.feature \\.ico\\{[^}]*\\}', '', s)
-          s = re.sub(r'\\.feature b\\{[^}]*\\}', '', s)
-          s = re.sub(r'\\.feature span\\{[^}]*\\}', '', s)
+          # Remove feature-strip CSS, including responsive rules.
+          s = re.sub(r'\.feature-grid\{[^}]*\}', '', s)
+          s = re.sub(r'\.feature\{[^}]*\}', '', s)
+          s = re.sub(r'\.feature \.ico\{[^}]*\}', '', s)
+          s = re.sub(r'\.feature b\{[^}]*\}', '', s)
+          s = re.sub(r'\.feature span\{[^}]*\}', '', s)
 
-          # Remove the bottom six-card feature section from the page.
+          # Remove the six-card feature section but keep the app closing div.
           s = re.sub(
-              r'<div class="feature-grid">.*?</div></div>\\n<div class="modal-backdrop"',
-              '</div>\\n<div class="modal-backdrop"',
+              r'<div class="feature-grid">.*?</div></div>\n<div class="modal-backdrop"',
+              '</div>\n<div class="modal-backdrop"',
               s,
               flags=re.S,
           )
