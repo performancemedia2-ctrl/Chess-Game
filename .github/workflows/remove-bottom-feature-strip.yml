@@ -18,25 +18,33 @@ jobs:
         shell: python
         run: |
           from pathlib import Path
-          import re
 
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          # Remove feature-strip CSS, including responsive rules.
-          s = re.sub(r'\.feature-grid\{[^}]*\}', '', s)
-          s = re.sub(r'\.feature\{[^}]*\}', '', s)
-          s = re.sub(r'\.feature \.ico\{[^}]*\}', '', s)
-          s = re.sub(r'\.feature b\{[^}]*\}', '', s)
-          s = re.sub(r'\.feature span\{[^}]*\}', '', s)
+          # Remove feature-strip CSS blocks safely.
+          for marker in [
+              '.feature-grid{',
+              '.feature{',
+              '.feature .ico{',
+              '.feature b{',
+              '.feature span{',
+          ]:
+              while marker in s:
+                  start = s.find(marker)
+                  end = s.find('}', start)
+                  if end == -1:
+                      break
+                  s = s[:start] + s[end + 1:]
 
-          # Remove the six-card feature section but keep the app closing div.
-          s = re.sub(
-              r'<div class="feature-grid">.*?</div></div>\n<div class="modal-backdrop"',
-              '</div>\n<div class="modal-backdrop"',
-              s,
-              flags=re.S,
-          )
+          # Remove everything from the bottom feature strip to the modal,
+          # while preserving the app's closing </div>.
+          start_marker = '<div class="feature-grid">'
+          end_marker = '<div class="modal-backdrop"'
+          if start_marker in s and end_marker in s:
+              start = s.index(start_marker)
+              end = s.index(end_marker, start)
+              s = s[:start] + '</div>\n' + s[end:]
 
           p.write_text(s, encoding='utf-8')
 
