@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0f14">
+<meta name="description" content="Royal Chess Arena — play chess with timers, undo, captures and computer AI.">
+<title>Royal Chess Arena</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230b0f14'/%3E%3Ctext x='32' y='47' text-anchor='middle' font-size='43'%3E♛%3C/text%3E%3C/svg%3E">
+<style>
+:root{color-scheme:dark;--bg:#070a0e;--panel:#0d131a;--line:#26313d;--gold:#f3c85b;--green:#18d85d}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:radial-gradient(circle at 50% -20%,#202b38 0,#0a0e13 48%,#050608 100%);font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:#fff}
+.brandbar{position:fixed;z-index:100;top:0;left:0;right:0;height:76px;display:flex;align-items:center;justify-content:space-between;padding:10px max(16px,calc((100vw - 1360px)/2));background:linear-gradient(180deg,#080c12f5,#080c12e8);border-bottom:1px solid #26313dcc;backdrop-filter:blur(14px);box-shadow:0 8px 30px #0007}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}.logo{width:48px;height:48px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(145deg,#1a222c,#0b1016);border:1px solid #4a5563;box-shadow:inset 0 1px #ffffff16,0 8px 24px #0007}.logo svg{width:31px;height:31px;fill:var(--gold);filter:drop-shadow(0 0 8px #f3c85b55)}.name{font-weight:950;letter-spacing:.2px;font-size:20px;white-space:nowrap}.tag{font-size:11px;color:#8e9aa8;margin-top:2px}
+.actions{display:flex;gap:8px}.share{border:1px solid #4d5b69;background:#111820;color:#f5f7fa;border-radius:10px;padding:10px 14px;font-weight:850;cursor:pointer;box-shadow:0 4px 18px #0004}.share:hover{border-color:var(--gold);transform:translateY(-1px)}
+#game{position:fixed;inset:0;width:100%;height:100%;border:0;background:transparent}
+.toast{position:fixed;z-index:120;left:50%;bottom:22px;transform:translate(-50%,20px);padding:11px 16px;border:1px solid #3a4652;background:#0d131af2;border-radius:10px;color:#fff;font-size:13px;font-weight:800;opacity:0;pointer-events:none;transition:.22s;box-shadow:0 12px 35px #0008}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:600px){.brandbar{height:70px;padding:8px 10px}.logo{width:42px;height:42px;border-radius:12px}.name{font-size:17px}.tag{font-size:9px}.share{padding:9px 11px;font-size:12px}.share span{display:none}}
+</style>
+</head>
+<body>
+<header class="brandbar">
+  <div class="brand">
+    <div class="logo" aria-label="Royal Chess Arena logo">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 8h24v8h-6v8h10v8H16v-8h10v-8h-6V8Zm-7 32h38l-4 16H17l-4-16Zm7-4h24v4H20v-4Z"/></svg>
+    </div>
+    <div><div class="name">Royal Chess Arena</div><div class="tag">Classic chess • 10-minute clock • vs Computer</div></div>
+  </div>
+  <div class="actions"><button class="share" id="shareBtn">↗ <span>Share Game</span></button></div>
+</header>
+<iframe id="game" src="./index.html" title="Royal Chess Arena chess game" allow="autoplay"></iframe>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+const frame=document.getElementById('game'),toast=document.getElementById('toast');
+function showToast(message){toast.textContent=message;toast.classList.add('show');clearTimeout(showToast.t);showToast.t=setTimeout(()=>toast.classList.remove('show'),2200)}
+function polishGame(){try{const d=frame.contentDocument;if(!d)return;const s=d.createElement('style');s.textContent='body{padding-top:92px!important}header.topbar{display:none!important}.app{width:min(1360px,98vw)!important}';d.head.appendChild(s);d.title='Royal Chess Arena';}catch(e){}}
+frame.addEventListener('load',polishGame);
+document.getElementById('shareBtn').addEventListener('click',async()=>{const url=location.href;if(navigator.share){try{await navigator.share({title:'Royal Chess Arena',text:'Play a game of chess with me!',url});showToast('Share sheet opened')}catch(e){if(e.name!=='AbortError')showToast('Share cancelled')}}else{try{await navigator.clipboard.writeText(url);showToast('Game link copied!')}catch(e){showToast(url)}}});
+</script>
+</body>
+</html>
