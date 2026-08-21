@@ -1,0 +1,49 @@
+name: Remove bottom feature strip
+
+on:
+  push:
+
+permissions:
+  contents: write
+
+jobs:
+  remove-feature-strip:
+    if: github.event.head_commit.message != 'Remove bottom feature strip'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Remove bottom feature strip
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          # Remove the feature-strip CSS, including responsive rules.
+          s = re.sub(r'\\.feature-grid\\{[^}]*\\}', '', s)
+          s = re.sub(r'\\.feature\\{[^}]*\\}', '', s)
+          s = re.sub(r'\\.feature \\.ico\\{[^}]*\\}', '', s)
+          s = re.sub(r'\\.feature b\\{[^}]*\\}', '', s)
+          s = re.sub(r'\\.feature span\\{[^}]*\\}', '', s)
+
+          # Remove the bottom six-card feature section from the page.
+          s = re.sub(
+              r'<div class="feature-grid">.*?</div></div>\\n<div class="modal-backdrop"',
+              '</div>\\n<div class="modal-backdrop"',
+              s,
+              flags=re.S,
+          )
+
+          p.write_text(s, encoding='utf-8')
+
+      - name: Commit change
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet || git commit -m "Remove bottom feature strip"
+          git push
