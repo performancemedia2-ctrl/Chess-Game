@@ -1,114 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Chess Game</title>
 <style>
-*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Arial,sans-serif;background:radial-gradient(circle at top,#263449,#0b1018);color:#fff;display:flex;justify-content:center;align-items:center;padding:20px}.app{width:min(95vw,680px);text-align:center}h1{margin:0 0 8px;font-size:clamp(28px,7vw,44px)}#status{min-height:28px;margin-bottom:14px;font-weight:700}.board{width:min(92vw,560px);aspect-ratio:1;margin:auto;display:grid;grid-template-columns:repeat(8,1fr);border:5px solid #111827;border-radius:10px;overflow:hidden;box-shadow:0 18px 45px #0008}.square{display:flex;align-items:center;justify-content:center;font-size:clamp(30px,8vw,62px);cursor:pointer;user-select:none;position:relative}.light{background:#f0d9b5}.dark{background:#b58863}.selected{outline:5px solid #22c55e;outline-offset:-5px}.move::after{content:"";width:24%;height:24%;border-radius:50%;background:#22c55e99;position:absolute}.capture::after{content:"";position:absolute;inset:7%;border:5px solid #ef4444aa;border-radius:50%}.controls{margin-top:18px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap}button{border:0;border-radius:9px;padding:11px 18px;font-size:16px;font-weight:700;cursor:pointer;background:#fff;color:#111827}button:hover{transform:translateY(-1px)}button.active{background:#22c55e;color:#07130b}.hint{margin-top:12px;color:#cbd5e1;font-size:14px}.piece{filter:drop-shadow(0 2px 1px #0008)}.thinking{opacity:.7;pointer-events:none}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,Arial,sans-serif;background:radial-gradient(circle at 50% -10%,#334155 0,#111827 42%,#070b12 100%);color:#fff;display:flex;justify-content:center;align-items:center;padding:22px}.app{width:min(96vw,720px);text-align:center}h1{margin:0;font-size:clamp(30px,7vw,46px);letter-spacing:-1px;text-shadow:0 3px 12px #0008}.subtitle{color:#94a3b8;margin:5px 0 8px;font-size:13px}.status{min-height:30px;margin:4px 0 14px;font-weight:800;font-size:17px}.board-wrap{width:min(94vw,590px);margin:auto;padding:10px;background:linear-gradient(145deg,#5b4635,#21170f);border:1px solid #9a7958;border-radius:16px;box-shadow:0 22px 55px #000b,0 0 0 2px #120d09}.board{width:100%;aspect-ratio:1;display:grid;grid-template-columns:repeat(8,1fr);border-radius:8px;overflow:hidden;box-shadow:inset 0 0 0 2px #0008}.square{position:relative;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;transition:filter .12s,transform .08s}.square:hover{filter:brightness(1.09)}.light{background:linear-gradient(135deg,#f1dfc1,#dfc49c)}.dark{background:linear-gradient(135deg,#a97545,#86582f)}.piece{font-family:"DejaVu Sans","Segoe UI Symbol",serif;font-size:clamp(34px,8.6vw,66px);line-height:1;position:relative;z-index:2;filter:drop-shadow(0 3px 2px #0009)}.piece.white{color:#fff;text-shadow:0 1px 0 #b8b8b8,0 3px 3px #0008}.piece.black{color:#171717;text-shadow:0 1px 0 #555,0 3px 3px #0008}.selected{box-shadow:inset 0 0 0 5px #22c55e,inset 0 0 28px #22c55e66}.move::after{content:"";position:absolute;width:21%;height:21%;border-radius:50%;background:#16a34acc;box-shadow:0 0 0 3px #fff4;z-index:1}.capture::after{content:"";position:absolute;inset:8%;border:5px solid #ef4444cc;border-radius:50%;z-index:3;box-shadow:0 0 12px #ef444466}.last{box-shadow:inset 0 0 0 999px #facc1540}.thinking{opacity:.7;pointer-events:none}.controls{margin-top:18px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap}button{border:1px solid #ffffff22;border-radius:10px;padding:11px 17px;font-size:15px;font-weight:800;cursor:pointer;background:linear-gradient(#fff,#e5e7eb);color:#111827;box-shadow:0 5px 14px #0005;transition:.15s}button:hover{transform:translateY(-2px);box-shadow:0 8px 18px #0006}button.active{background:linear-gradient(#4ade80,#16a34a);color:#052e16;border-color:#86efac}.hint{margin:13px auto 0;color:#94a3b8;font-size:13px;max-width:580px;line-height:1.5}.labels{display:none}@media(max-width:500px){body{padding:12px}.board-wrap{padding:6px;border-radius:12px}.piece{font-size:11vw}button{padding:10px 13px;font-size:14px}}
 </style>
 </head>
-<body>
-<div class="app">
-<h1>♟ Chess Game</h1>
-<div id="status">White's turn</div>
-<div id="board" class="board"></div>
-<div class="controls">
-<button id="newGame">New Game</button>
-<button id="flip">Flip Board</button>
-<button id="aiMode">🤖 Play vs Computer</button>
-</div>
-<div class="hint">Click a piece, then click a highlighted square. In AI mode, you play White and the computer plays Black.</div>
+<body><div class="app">
+<h1>♟ Chess Game</h1><div class="subtitle">Classic board • Legal moves • Smart Computer</div><div id="status" class="status">White's turn</div>
+<div class="board-wrap"><div id="board" class="board"></div></div>
+<div class="controls"><button id="newGame">New Game</button><button id="flip">↔ Flip Board</button><button id="aiMode">🤖 Play vs Computer</button></div>
+<div class="hint">Select a piece to see legal moves. Green dot = move • Red ring = capture. In AI mode, you play White.</div>
 </div>
 <script>
 const icons={w:{k:'♔',q:'♕',r:'♖',b:'♗',n:'♘',p:'♙'},b:{k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟'}};
-let board,turn,selected,gameOver,flipped=false,vsComputer=false,thinking=false;
-
+let board,turn,selected,gameOver,flipped=false,vsComputer=false,thinking=false,lastMove=null;
 function initial(){return [['br','bn','bb','bq','bk','bb','bn','br'],Array(8).fill('bp'),Array(8).fill(null),Array(8).fill(null),Array(8).fill(null),Array(8).fill(null),Array(8).fill('wp'),['wr','wn','wb','wq','wk','wb','wn','wr']].map(r=>r.slice())}
-function color(p){return p?p[0]:null}
-function type(p){return p?p[1]:null}
-function inside(r,c){return r>=0&&r<8&&c>=0&&c<8}
-
-function pseudo(r,c){
- const p=board[r][c],t=type(p),col=color(p),moves=[];if(!p)return moves;
- const add=(rr,cc)=>{if(!inside(rr,cc))return false;if(!board[rr][cc]){moves.push([rr,cc]);return true}if(color(board[rr][cc])!==col)moves.push([rr,cc]);return false};
- if(t==='p'){let d=col==='w'?-1:1,start=col==='w'?6:1;if(inside(r+d,c)&&!board[r+d][c]){moves.push([r+d,c]);if(r===start&&!board[r+2*d][c])moves.push([r+2*d,c])}for(const dc of[-1,1])if(inside(r+d,c+dc)&&board[r+d][c+dc]&&color(board[r+d][c+dc])!==col)moves.push([r+d,c+dc])}
- if(t==='n')for(const [dr,dc] of [[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]])add(r+dr,c+dc);
- if(t==='k')for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++)if(dr||dc)add(r+dr,c+dc);
- if(['b','r','q'].includes(t)){let dirs=[];if(['b','q'].includes(t))dirs.push([-1,-1],[-1,1],[1,-1],[1,1]);if(['r','q'].includes(t))dirs.push([-1,0],[1,0],[0,-1],[0,1]);for(const[dr,dc]of dirs){let rr=r+dr,cc=c+dc;while(inside(rr,cc)){if(!add(rr,cc))break;rr+=dr;cc+=dc}}}
- return moves
-}
-
-function attacked(r,c,by){
- for(let rr=0;rr<8;rr++)for(let cc=0;cc<8;cc++)if(color(board[rr][cc])===by){const p=board[rr][cc],t=type(p);
-  if(t==='p'){let d=by==='w'?-1:1;if(r===rr+d&&Math.abs(c-cc)===1)return true}
-  else if(t==='k'){if(Math.max(Math.abs(r-rr),Math.abs(c-cc))===1)return true}
-  else if(pseudo(rr,cc).some(x=>x[0]===r&&x[1]===c))return true;
- }
- return false
-}
+function color(p){return p?p[0]:null}function type(p){return p?p[1]:null}function inside(r,c){return r>=0&&r<8&&c>=0&&c<8}
+function pseudo(r,c){const p=board[r][c],t=type(p),col=color(p),moves=[];if(!p)return moves;const add=(rr,cc)=>{if(!inside(rr,cc))return false;if(!board[rr][cc]){moves.push([rr,cc]);return true}if(color(board[rr][cc])!==col)moves.push([rr,cc]);return false};if(t==='p'){let d=col==='w'?-1:1,start=col==='w'?6:1;if(inside(r+d,c)&&!board[r+d][c]){moves.push([r+d,c]);if(r===start&&!board[r+2*d][c])moves.push([r+2*d,c])}for(const dc of[-1,1])if(inside(r+d,c+dc)&&board[r+d][c+dc]&&color(board[r+d][c+dc])!==col)moves.push([r+d,c+dc])}if(t==='n')for(const[dr,dc]of[[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]])add(r+dr,c+dc);if(t==='k')for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++)if(dr||dc)add(r+dr,c+dc);if(['b','r','q'].includes(t)){let dirs=[];if(['b','q'].includes(t))dirs.push([-1,-1],[-1,1],[1,-1],[1,1]);if(['r','q'].includes(t))dirs.push([-1,0],[1,0],[0,-1],[0,1]);for(const[dr,dc]of dirs){let rr=r+dr,cc=c+dc;while(inside(rr,cc)){if(!add(rr,cc))break;rr+=dr;cc+=dc}}}return moves}
+function attacked(r,c,by){for(let rr=0;rr<8;rr++)for(let cc=0;cc<8;cc++)if(color(board[rr][cc])===by){const p=board[rr][cc],t=type(p);if(t==='p'){let d=by==='w'?-1:1;if(r===rr+d&&Math.abs(c-cc)===1)return true}else if(t==='k'){if(Math.max(Math.abs(r-rr),Math.abs(c-cc))===1)return true}else if(pseudo(rr,cc).some(x=>x[0]===r&&x[1]===c))return true}return false}
 function kingInCheck(col){let kr=-1,kc=-1;for(let r=0;r<8;r++)for(let c=0;c<8;c++)if(board[r][c]===col+'k'){kr=r;kc=c}return kr<0||attacked(kr,kc,col==='w'?'b':'w')}
-function legal(r,c){const p=board[r][c],out=[];for(const [rr,cc] of pseudo(r,c)){const captured=board[rr][cc];if(captured&&type(captured)==='k')continue;board[rr][cc]=p;board[r][c]=null;if(!kingInCheck(color(p)))out.push([rr,cc]);board[r][c]=p;board[rr][cc]=captured}return out}
-function allLegal(col){const moves=[];for(let r=0;r<8;r++)for(let c=0;c<8;c++)if(color(board[r][c])===col)for(const [rr,cc] of legal(r,c))moves.push({from:[r,c],to:[rr,cc]});return moves}
-function anyLegal(col){return allLegal(col).length>0}
-
-function render(){
- const el=document.getElementById('board');el.innerHTML='';const status=document.getElementById('status');const check=kingInCheck(turn);
- if(gameOver)status.textContent=check?'Checkmate! '+(turn==='w'?'Black':'White')+' wins.':'Draw.';
- else if(thinking)status.textContent='🤖 Computer is thinking...';
- else status.textContent=(turn==='w'?'White':'Black')+"'s turn"+(check?' — CHECK!':'')+(vsComputer&&turn==='w'?' — You play White':'');
- document.getElementById('aiMode').classList.toggle('active',vsComputer);
- for(let vr=0;vr<8;vr++)for(let vc=0;vc<8;vc++){
-  const r=flipped?7-vr:vr,c=flipped?7-vc:vc,s=document.createElement('div');s.className='square '+((r+c)%2?'dark':'light');
-  if(selected&&selected[0]===r&&selected[1]===c)s.classList.add('selected');
-  if(selected){const lm=legal(...selected);if(lm.some(x=>x[0]===r&&x[1]===c))s.classList.add(board[r][c]?'capture':'move')}
-  const p=board[r][c];if(p)s.innerHTML='<span class="piece">'+icons[color(p)][type(p)]+'</span>';s.onclick=()=>clickSquare(r,c);el.appendChild(s)
- }
- el.classList.toggle('thinking',thinking);
-}
-
-function makeMove(sr,sc,r,c){
- board[r][c]=board[sr][sc];board[sr][sc]=null;
- if(type(board[r][c])==='p'&&(r===0||r===7))board[r][c]=color(board[r][c])+'q';
- turn=turn==='w'?'b':'w';selected=null;
- if(!anyLegal(turn))gameOver=true;
-}
-
-function clickSquare(r,c){
- if(gameOver||thinking||(vsComputer&&turn==='b'))return;
- const p=board[r][c];
- if(!selected){if(color(p)===turn){selected=[r,c];render()}return}
- const [sr,sc]=selected;
- if(sr===r&&sc===c){selected=null;render();return}
- if(color(p)===turn){selected=[r,c];render();return}
- if(legal(sr,sc).some(x=>x[0]===r&&x[1]===c)){makeMove(sr,sc,r,c);render();if(vsComputer&&!gameOver&&turn==='b')setTimeout(computerMove,280)}
-}
-
-const values={p:100,n:320,b:330,r:500,q:900,k:20000};
-function evaluate(){let score=0;for(let r=0;r<8;r++)for(let c=0;c<8;c++){const p=board[r][c];if(p)score+=(color(p)==='b'?1:-1)*values[type(p)]}return score}
-function applyTemp(m){const p=board[m.from[0]][m.from[1]],captured=board[m.to[0]][m.to[1]];board[m.to[0]][m.to[1]]=p;board[m.from[0]][m.from[1]]=null;return {p,captured}}
-function undoTemp(m,s){board[m.from[0]][m.from[1]]=s.p;board[m.to[0]][m.to[1]]=s.captured}
-function minimax(depth,alpha,beta,maximizing){
- const moves=allLegal(maximizing?'b':'w');
- if(depth===0||moves.length===0){if(moves.length===0){const col=maximizing?'b':'w';if(kingInCheck(col))return maximizing?-999999+depth:999999-depth;return 0}return evaluate()}
- if(maximizing){let best=-Infinity;for(const m of moves){const s=applyTemp(m);let v=minimax(depth-1,alpha,beta,false);undoTemp(m,s);best=Math.max(best,v);alpha=Math.max(alpha,v);if(beta<=alpha)break}return best}
- let best=Infinity;for(const m of moves){const s=applyTemp(m);let v=minimax(depth-1,alpha,beta,true);undoTemp(m,s);best=Math.min(best,v);beta=Math.min(beta,v);if(beta<=alpha)break}return best
-}
-function computerMove(){
- if(!vsComputer||turn!=='b'||gameOver)return;
- thinking=true;render();
- setTimeout(()=>{
-  const moves=allLegal('b');if(!moves.length){thinking=false;gameOver=true;render();return}
-  let best=-Infinity,bestMoves=[];
-  for(const m of moves){const s=applyTemp(m);const score=minimax(2,-Infinity,Infinity,false)+Math.random()*4;undoTemp(m,s);if(score>best+0.01){best=score;bestMoves=[m]}else if(Math.abs(score-best)<0.01)bestMoves.push(m)}
-  const m=bestMoves[Math.floor(Math.random()*bestMoves.length)];makeMove(m.from[0],m.from[1],m.to[0],m.to[1]);thinking=false;render();
- },180)
-}
-
-document.getElementById('newGame').onclick=()=>{board=initial();turn='w';selected=null;gameOver=false;thinking=false;render()};
-document.getElementById('flip').onclick=()=>{flipped=!flipped;render()};
-document.getElementById('aiMode').onclick=()=>{vsComputer=!vsComputer;document.getElementById('newGame').click()};
-document.getElementById('newGame').click();
-</script>
-</body>
-</html>
+function legal(r,c){const p=board[r][c],out=[];for(const[rr,cc]of pseudo(r,c)){const captured=board[rr][cc];if(captured&&type(captured)==='k')continue;board[rr][cc]=p;board[r][c]=null;if(!kingInCheck(color(p)))out.push([rr,cc]);board[r][c]=p;board[rr][cc]=captured}return out}
+function allLegal(col){const moves=[];for(let r=0;r<8;r++)for(let c=0;c<8;c++)if(color(board[r][c])===col)for(const[rr,cc]of legal(r,c))moves.push({from:[r,c],to:[rr,cc]});return moves}function anyLegal(col){return allLegal(col).length>0}
+function render(){const el=document.getElementById('board');el.innerHTML='';const status=document.getElementById('status'),check=kingInCheck(turn);if(gameOver)status.textContent=check?'♛ Checkmate! '+(turn==='w'?'Black':'White')+' wins.':'½ Draw.';else if(thinking)status.textContent='🤖 Computer is thinking...';else status.textContent=(turn==='w'?'White':'Black')+"'s turn"+(check?' — CHECK!':'')+(vsComputer&&turn==='w'?' — You play White':'');document.getElementById('aiMode').classList.toggle('active',vsComputer);for(let vr=0;vr<8;vr++)for(let vc=0;vc<8;vc++){const r=flipped?7-vr:vr,c=flipped?7-vc:vc,s=document.createElement('div');s.className='square '+((r+c)%2?'dark':'light');if(lastMove&&((lastMove[0][0]===r&&lastMove[0][1]===c)||(lastMove[1][0]===r&&lastMove[1][1]===c)))s.classList.add('last');if(selected&&selected[0]===r&&selected[1]===c)s.classList.add('selected');if(selected){const lm=legal(...selected);if(lm.some(x=>x[0]===r&&x[1]===c))s.classList.add(board[r][c]?'capture':'move')}const p=board[r][c];if(p){const span=document.createElement('span');span.className='piece '+(color(p)==='w'?'white':'black');span.textContent=icons[color(p)][type(p)];s.appendChild(span)}s.onclick=()=>clickSquare(r,c);el.appendChild(s)}el.classList.toggle('thinking',thinking)}
+function makeMove(sr,sc,r,c){board[r][c]=board[sr][sc];board[sr][sc]=null;if(type(board[r][c])==='p'&&(r===0||r===7))board[r][c]=color(board[r][c])+'q';lastMove=[[sr,sc],[r,c]];turn=turn==='w'?'b':'w';selected=null;if(!anyLegal(turn))gameOver=true}
+function clickSquare(r,c){if(gameOver||thinking||(vsComputer&&turn==='b'))return;const p=board[r][c];if(!selected){if(color(p)===turn){selected=[r,c];render()}return}const[sr,sc]=selected;if(sr===r&&sc===c){selected=null;render();return}if(color(p)===turn){selected=[r,c];render();return}if(legal(sr,sc).some(x=>x[0]===r&&x[1]===c)){makeMove(sr,sc,r,c);render();if(vsComputer&&!gameOver&&turn==='b')setTimeout(computerMove,280)}}
+const values={p:100,n:320,b:330,r:500,q:900,k:20000};function evaluate(){let score=0;for(let r=0;r<8;r++)for(let c=0;c<8;c++){const p=board[r][c];if(p)score+=(color(p)==='b'?1:-1)*values[type(p)]}return score}function applyTemp(m){const p=board[m.from[0]][m.from[1]],captured=board[m.to[0]][m.to[1]];board[m.to[0]][m.to[1]]=p;board[m.from[0]][m.from[1]]=null;return{p,captured}}function undoTemp(m,s){board[m.from[0]][m.from[1]]=s.p;board[m.to[0]][m.to[1]]=s.captured}
+function minimax(depth,alpha,beta,maximizing){const moves=allLegal(maximizing?'b':'w');if(depth===0||moves.length===0){if(moves.length===0){const col=maximizing?'b':'w';if(kingInCheck(col))return maximizing?-999999+depth:999999-depth;return 0}return evaluate()}if(maximizing){let best=-Infinity;for(const m of moves){const s=applyTemp(m),v=minimax(depth-1,alpha,beta,false);undoTemp(m,s);best=Math.max(best,v);alpha=Math.max(alpha,v);if(beta<=alpha)break}return best}let best=Infinity;for(const m of moves){const s=applyTemp(m),v=minimax(depth-1,alpha,beta,true);undoTemp(m,s);best=Math.min(best,v);beta=Math.min(beta,v);if(beta<=alpha)break}return best}
+function computerMove(){if(!vsComputer||turn!=='b'||gameOver)return;thinking=true;render();setTimeout(()=>{const moves=allLegal('b');if(!moves.length){thinking=false;gameOver=true;render();return}let best=-Infinity,bestMoves=[];for(const m of moves){const s=applyTemp(m),score=minimax(2,-Infinity,Infinity,false)+Math.random()*4;undoTemp(m,s);if(score>best+.01){best=score;bestMoves=[m]}else if(Math.abs(score-best)<.01)bestMoves.push(m)}const m=bestMoves[Math.floor(Math.random()*bestMoves.length)];makeMove(m.from[0],m.from[1],m.to[0],m.to[1]);thinking=false;render()},180)}
+document.getElementById('newGame').onclick=()=>{board=initial();turn='w';selected=null;gameOver=false;thinking=false;lastMove=null;render()};document.getElementById('flip').onclick=()=>{flipped=!flipped;render()};document.getElementById('aiMode').onclick=()=>{vsComputer=!vsComputer;document.getElementById('newGame').click()};document.getElementById('newGame').click();
+</script></body></html>
