@@ -1,0 +1,25 @@
+name: Validate chess code
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Extract and syntax-check JavaScript
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          html = Path('index.html').read_text(encoding='utf-8')
+          scripts = re.findall(r'<script>(.*?)</script>', html, flags=re.S)
+          assert scripts, 'No inline script found'
+          Path('/tmp/chess.js').write_text('\n'.join(scripts), encoding='utf-8')
+      - name: Node syntax check
+        run: node --check /tmp/chess.js
